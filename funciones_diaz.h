@@ -11,6 +11,7 @@ bool crearArchivoImagen (const t_imageData *imagen, const char *nombreArchivo);
 void procesarImagenesFiltroArg1Met (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,char filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff);
 void procesarImagenesFiltroArg0 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet, void filtro(t_imageData *imagen), const char *nombreGrupo,char *nombreImagenGuarBuff);
 void procesarImagenesFiltroArg0Met (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,bool filtro(t_imageData *imagen), const char *nombreGrupo,char *nombreImagenGuarBuff);
+void procesarImagenesConcat (t_imageDataVector *imageStateDataVector, t_functionsData *ptrFun, bool filtro (t_imageData *imagen1, t_imageData *imagen2), const char *nombreGrupo,char *nombreImagenGuarBuff, t_imageData **concatenar1, t_imageData **concatenar2);
 bool encontrarImagenes (t_imageDataVector *imageStateDataVector, t_imageData **imagen1, t_imageData **imagen2);
 void restaurarPunteroImg(t_imageDataVector *imageStateDataVector);
 void liberarMemoria (t_imageDataVector *imageStateDataVector);

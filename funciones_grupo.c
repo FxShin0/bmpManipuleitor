@@ -93,7 +93,7 @@ int solucion(int argc, char* argv[])
         imageStateDataVector.ptrMov++;
     }
     restaurarPunteroImg(&imageStateDataVector);
-    //modifica argvPtr, y funPtr
+    //modifica argvPtr, y funPtr. Procesamiento de argumentos del main
     for(int x=1; x<argc; x++)
     {
         argToNumberRet=argToNumber(*argvPtr,datosFunciones);
@@ -292,27 +292,7 @@ int solucion(int argc, char* argv[])
         case 12: //concatenar-horizontal
         {
             if(!ptrFun->functionIsUsed)
-            {
-                if(encontrarImagenes(&imageStateDataVector,&concatenar1,&concatenar2))
-                {
-                    if(concatenarHorizontal(concatenar1,concatenar2))
-                    {
-                        crearNombreImagenGuardadoConcat(concatenar1->realName,concatenar2->realName,ptrFun->functionName,nombreGrupo,nombreImagenGuarBuff);
-                        if(!crearArchivoImagen(concatenar1,nombreImagenGuarBuff))
-                            printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
-                        else
-                            printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
-                        destruirMat((void**)concatenar1->imagePixelsMod,concatenar1->metadataMod.height);
-                        concatenar1->imagePixelsMod=concatenar1->imagenPixelsModPtr;
-                        restaurarImagenModificable(concatenar1);
-                    }
-                    else
-                        printf("Error: no se pudo asignar memoria dinamica para la imagen concatenada\n");
-                }
-                else
-                    printf("Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName);
-                ptrFun->functionIsUsed=true;
-            }
+                procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarHorizontal,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2);
             else
                 printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
             break;
@@ -342,27 +322,7 @@ int solucion(int argc, char* argv[])
         case 15: //concatenar-vertical
         {
             if(!ptrFun->functionIsUsed)
-            {
-                if(encontrarImagenes(&imageStateDataVector,&concatenar1,&concatenar2))
-                {
-                    if(concatenarVertical(concatenar1,concatenar2))
-                    {
-                        crearNombreImagenGuardadoConcat(concatenar1->realName,concatenar2->realName,ptrFun->functionName,nombreGrupo,nombreImagenGuarBuff);
-                        if(!crearArchivoImagen(concatenar1,nombreImagenGuarBuff))
-                            printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
-                        else
-                            printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
-                        destruirMat((void**)concatenar1->imagePixelsMod,concatenar1->metadataMod.height);
-                        concatenar1->imagePixelsMod=concatenar1->imagenPixelsModPtr;
-                        restaurarImagenModificable(concatenar1);
-                    }
-                    else
-                        printf("Error: no se pudo asignar memoria dinamica para la imagen concatenada\n");
-                }
-                else
-                    printf("Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName);
-                ptrFun->functionIsUsed=true;
-            }
+                procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarVertical,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2);
             else
                 printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
             break;
@@ -376,7 +336,11 @@ int solucion(int argc, char* argv[])
         argvPtr++;
         ptrFun=datosFunciones;
     }
+
     liberarMemoria(&imageStateDataVector);
     return 0;
 }
+
+
+
 

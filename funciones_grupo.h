@@ -66,6 +66,11 @@ typedef struct
     bool functionIsUsed;
     int porcentaje;
 }t_functionsData;
+typedef struct
+{
+    char archName[256]; //guardara el nombre del archivo de conf o de errores
+    bool isValid; //indicara si este existe o no
+}t_ConfErrorArchState;
 #include "funciones_diaz.h"
 #include "funciones_girardin.h"
 #include "funciones_mussipulcini.h"

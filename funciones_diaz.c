@@ -220,6 +220,9 @@ bool encontrarImagenes (t_imageDataVector *imageStateDataVector, t_imageData **i
 {
     int ce=imageStateDataVector->ce,x=0,flag1=0,flag2=0;
     t_imageData *vec=imageStateDataVector->vec;
+    //quizas previamente ya se habia llamado a encontrar imagenes, en ese caso evitamos procesar ya que ya se encontraron las imagenes.
+    if(*imagen1!=NULL&&*imagen2!=NULL)
+        return true;
     while((flag1==0||flag2==0)&&x<ce)
     {
         if(vec->isLoaded)
@@ -456,4 +459,28 @@ bool concatenarVertical (t_imageData *imagen1, t_imageData *imagen2)
     imagen1->imagePixelsMod=canvas;
     recalcularMetadatos(imagen1,newHeight,newWidth);
     return true;
+}
+//agregados reentrega
+void procesarImagenesConcat (t_imageDataVector *imageStateDataVector, t_functionsData *ptrFun, bool filtro (t_imageData *imagen1, t_imageData *imagen2), const char *nombreGrupo,char *nombreImagenGuarBuff, t_imageData **concatenar1, t_imageData **concatenar2)
+{
+    //funcion procesadora para los filtros de concatenacion: --concatenar-vertical, --concatenar-horizontal
+    if(encontrarImagenes(imageStateDataVector,concatenar1,concatenar2))
+    {
+        if(filtro(*concatenar1,*concatenar2))
+        {
+            crearNombreImagenGuardadoConcat((*concatenar1)->realName,(*concatenar2)->realName,ptrFun->functionName,nombreGrupo,nombreImagenGuarBuff);
+            if(!crearArchivoImagen(*concatenar1,nombreImagenGuarBuff))
+                printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+            else
+                printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+            destruirMat((void**)(*concatenar1)->imagePixelsMod,(*concatenar1)->metadataMod.height);
+            (*concatenar1)->imagePixelsMod=(*concatenar1)->imagenPixelsModPtr;
+            restaurarImagenModificable(*concatenar1);
+        }
+        else
+            printf("Error: no se pudo asignar memoria dinamica para la imagen concatenada\n");
+    }
+    else
+        printf("Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName);
+    ptrFun->functionIsUsed=true;
 }
