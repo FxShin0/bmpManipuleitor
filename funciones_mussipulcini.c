@@ -175,11 +175,19 @@ char argToNumber (char *arg, const t_functionsData *ptr)
     }
     if(isImageName(arg))
         return -1;
+    else if(isConfName(arg))
+    {
+        *fin=aux;
+        return -3;
+    }
+    else if(isErrName(arg))
+    {
+        *fin=aux;
+        return -4;
+    }
     else
         return -2;
 }
-
-
 int miStrcmp (const char *s1, const char *s2)
 {
     //si s1 es igual que s2 devuelve 0

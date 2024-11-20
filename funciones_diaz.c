@@ -484,3 +484,17 @@ void procesarImagenesConcat (t_imageDataVector *imageStateDataVector, t_function
         printf("Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName);
     ptrFun->functionIsUsed=true;
 }
+bool isConfName (const char *arg)
+{
+    if(miStrcmp(arg,"filtros")==0)
+        return true;
+    else
+        return false;
+}
+bool isErrName (const char *arg)
+{
+    if(miStrcmp(arg,"errores")==0)
+        return true;
+    else
+        return false;
+}

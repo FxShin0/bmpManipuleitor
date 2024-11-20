@@ -23,6 +23,7 @@
 int solucion(int argc, char* argv[])
 {
     t_functionsData datosFunciones[FUNCTIONS];
+    t_archConfErrData vecConfErr[2];
     t_functionsData *ptrFun=datosFunciones;
     const char nombreGrupo[]="DINAMITA";
     char nombreImagenGuarBuff[261];
@@ -38,6 +39,7 @@ int solucion(int argc, char* argv[])
         return ERROR_MEMORIA;
     }
     inicializarDatosFunciones(datosFunciones);
+    inicializarConfErr(vecConfErr);
     //modifica ptrMov y argvPtr
     for(int x=1; x<argc; x++)
     {
@@ -327,20 +329,89 @@ int solucion(int argc, char* argv[])
                 printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
             break;
         }
-        case -2:
+        case -2: //argumento no valido
         {
             printf("'%s' No es un comando valido o reconocido\n",*argvPtr);
+            break;
+        }
+        case -3: //posible arch de conf
+        {
+            if(vecConfErr->isValid==false)
+            {
+                if(verificarArchivoConf(*argvPtr, vecConfErr,vecConfErr+1))
+                {
+                    vecConfErr->isValid=true;
+                    printf("Nota: se utilizara '%s' como archivo de configuracion.\n",vecConfErr->archNom);
+                }
+            }
+            break;
+        }
+        case -4: //posible arch de errores
+        {
+            if((vecConfErr+1)->isValid==false)
+            {
+                if(obtenerNombreErr(*argvPtr,vecConfErr+1,vecConfErr))
+                {
+                    (vecConfErr+1)->isValid=true;
+                    printf("Nota: se utilizara '%s' como archivo de log de errores.\n",(vecConfErr+1)->archNom);
+                }
+            }
             break;
         }
         }
         argvPtr++;
         ptrFun=datosFunciones;
     }
-
     liberarMemoria(&imageStateDataVector);
     return 0;
 }
-
+bool verificarArchivoConf(char *arg, t_archConfErrData *dest, t_archConfErrData *verif)
+{
+    FILE *pf;
+    char *iniNom=NULL;
+    char *iniExt=NULL;
+    iniExt=miStrrchr(arg,'.');
+    if(iniExt==NULL) //el archivo conf no tiene una extension asociada
+        return false;
+    iniExt++;
+    if(miStrcmp(iniExt,"conf")!=0) //el archivo no tiene extension conf
+        return false;
+    iniNom=miStrrchr(arg,'=');
+    iniNom++;
+    pf=fopen(iniNom,"rt");
+    if(pf==NULL)   //el archivo conf no existe
+        return false;
+    fclose(pf);
+    if(verif->isValid&&miStrcmp(iniNom,verif->archNom)==0)
+        return false; //el archivo existe pero es el de errores
+    miStrcpy(dest->archNom,iniNom); //si llega aca es xq existe por tanto copiamos el nombre
+    return true;
+}
+void inicializarConfErr (t_archConfErrData *vec)
+{
+    miStrcpy(vec->archNom,"");
+    vec->isValid=false;
+    vec++;
+    miStrcpy(vec->archNom,"");
+    vec->isValid=false;
+}
+bool obtenerNombreErr (char *arg, t_archConfErrData *dest, t_archConfErrData *verif)
+{
+    char *iniNom=NULL;
+    char *iniExt=NULL;
+    iniExt=miStrrchr(arg,'.');
+    if(iniExt==NULL) //el archivo errores no tiene una extension asociada
+        return false;
+    iniExt++;
+    if(miStrcmp(iniExt,"txt")!=0) //el archivo no tiene extension .txt
+        return false;
+    iniNom=miStrrchr(arg,'=');
+    iniNom++;
+    if(verif->isValid&&miStrcmp(iniNom,verif->archNom)==0)
+        return false; //el archivo de errores se llama igual que el de conf.
+    miStrcpy(dest->archNom,iniNom); //si llega aca es xq es un nombre valido, copiamos el nombre
+    return true;
+}
 
 
 
