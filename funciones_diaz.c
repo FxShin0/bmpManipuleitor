@@ -275,8 +275,8 @@ void liberarMemoria (t_imageDataVector *imageStateDataVector)
 }
 bool rotarIzquierda (t_imageData *imagenSt)
 {
-    int newHeight=imagenSt->metadata.width,newWidth=imagenSt->metadata.height;
-    int oriHeight=imagenSt->metadata.height,oriWidth=imagenSt->metadata.width;
+    int newHeight=imagenSt->metadataMod.width,newWidth=imagenSt->metadataMod.height;
+    int oriHeight=imagenSt->metadataMod.height,oriWidth=imagenSt->metadataMod.width;
     t_pixel **imagenNueva;
     t_pixel **imagenVieja=imagenSt->imagePixelsMod;
     imagenNueva=(t_pixel**)crearMatrizGen(newHeight,newWidth,sizeof(t_pixel));
@@ -294,8 +294,8 @@ bool rotarIzquierda (t_imageData *imagenSt)
 }
 bool rotarDerecha (t_imageData *imagenSt)
 {
-    int newHeight=imagenSt->metadata.width,newWidth=imagenSt->metadata.height;
-    int oriHeight=imagenSt->metadata.height,oriWidth=imagenSt->metadata.width;
+    int newHeight=imagenSt->metadataMod.width,newWidth=imagenSt->metadataMod.height;
+    int oriHeight=imagenSt->metadataMod.height,oriWidth=imagenSt->metadataMod.width;
     t_pixel **imagenNueva;
     t_pixel **imagenVieja=imagenSt->imagePixelsMod;
     imagenNueva=(t_pixel**)crearMatrizGen(newHeight,newWidth,sizeof(t_pixel));

@@ -196,7 +196,7 @@ void aumentarContraste (t_imageData *imagenSt, int porcentaje)
     float p=1+(float)porcentaje/100;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL; //igual esto en realidad sirve para accesar un color dentro del pixel
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)
@@ -226,7 +226,7 @@ void reducirContraste (t_imageData *imagenSt, int porcentaje)
     float p=1+(float)porcentaje/100;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)
@@ -255,7 +255,7 @@ void tonalidadAzul (t_imageData *imagenSt, int porcentaje)
     float p=1+(float)porcentaje/100;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)
@@ -273,7 +273,7 @@ void tonalidadVerde (t_imageData *imagenSt, int porcentaje)
     float p=1+(float)porcentaje/100;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)
@@ -291,7 +291,7 @@ void tonalidadRoja (t_imageData *imagenSt, int porcentaje)
     float p=1+(float)porcentaje/100;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)
@@ -308,7 +308,7 @@ void comodin (t_imageData *imagenSt)
 {
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)

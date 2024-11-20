@@ -32,7 +32,7 @@ void greyFilter (t_imageData *imagenSt)
     int acum=0;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     unsigned char *pixelPtr=NULL;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     for(int x=0; x<height; x++)
     {
         for(int y=0; y<width; y++)
@@ -55,7 +55,7 @@ void greyFilter (t_imageData *imagenSt)
 }
 void espejarVertical (t_imageData *imagenSt)
 {
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     int filTop,filBot;
     filTop=0;
@@ -75,7 +75,7 @@ void espejarVertical (t_imageData *imagenSt)
 void espejarHorizontal (t_imageData *imagenSt)
 {
     t_pixel *fin,*ini;
-    int height=imagenSt->metadata.height, width=imagenSt->metadata.width;
+    int height=imagenSt->metadataMod.height, width=imagenSt->metadataMod.width;
     t_pixel **imagen=imagenSt->imagePixelsMod;
     for(int x=0; x<height; x++)
     {
