@@ -124,7 +124,7 @@ bool crearArchivoImagen (const t_imageData *imagen, const char *nombreArchivo)
     fclose(arch);
     return true;
 }
-void procesarImagenesFiltroArg1Met (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,char filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff)
+void procesarImagenesFiltroArg1Met (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,char filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff,bool mode, FILE **pfErr)
 {
     //Funcion procesadora para aquellos filtros que reciben 1 argumento, trabajan con 1 imagen y que modifican metadatos
     //Sirve para: --recortar, --achicar
@@ -140,9 +140,11 @@ void procesarImagenesFiltroArg1Met (t_imageDataVector *imageStateDataVector, con
             case FILTRO_APLICADO:
             {
                 if(!crearArchivoImagen(vecPtr,nombreImagenGuarBuff))
-                    printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+                    mode==false?printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff):
+                        fprintf(*pfErr,"ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
                 else
-                    printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+                    mode==false?printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff):
+                        fprintf(*pfErr,"La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
                 destruirMat((void**)vecPtr->imagePixelsMod,vecPtr->metadataMod.height);
                 vecPtr->imagePixelsMod=vecPtr->imagenPixelsModPtr;
                 restaurarImagenModificable(vecPtr);
@@ -150,15 +152,18 @@ void procesarImagenesFiltroArg1Met (t_imageDataVector *imageStateDataVector, con
             }
             case ERROR_MEMORIA:
             {
-                printf("ERROR: No se pudo asignar memoria para generar la imagen %s\n",nombreImagenGuarBuff);
+                mode==false?printf("ERROR: No se pudo asignar memoria para generar la imagen %s\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"ERROR: No se pudo asignar memoria para generar la imagen %s\n",nombreImagenGuarBuff);
                 break;
             }
             case FILTRO_NULO:
             {
                 if(!crearArchivoImagen(vecPtr,nombreImagenGuarBuff))
-                    printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+                    mode==false?printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff):
+                        fprintf(*pfErr,"ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
                 else
-                    printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+                    mode==false?printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff):
+                        fprintf(*pfErr,"La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
                 break;
             }
             default:
@@ -168,7 +173,7 @@ void procesarImagenesFiltroArg1Met (t_imageDataVector *imageStateDataVector, con
         vecPtr++;
     }
 }
-void procesarImagenesFiltroArg0Met (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,bool filtro(t_imageData *imagen), const char *nombreGrupo,char *nombreImagenGuarBuff)
+void procesarImagenesFiltroArg0Met (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,bool filtro(t_imageData *imagen), const char *nombreGrupo,char *nombreImagenGuarBuff,bool mode, FILE **pfErr)
 {
     //funcion procesadora para aquellos filtros que no tienen argumentos de entrada , trabajan con una imagen y modifican metadatos
     //sirve para rotar-derecha, rotar-izquierda
@@ -180,13 +185,16 @@ void procesarImagenesFiltroArg0Met (t_imageDataVector *imageStateDataVector, con
         {
             crearNombreImagenGuardado(vecPtr->realName,funPtr->functionName,nombreGrupo,nombreImagenGuarBuff);
             if(!filtro(vecPtr))
-                printf("ERROR: No se pudo asignar memoria para generar la imagen %s\n",nombreImagenGuarBuff);
+                mode==false?printf("ERROR: No se pudo asignar memoria para generar la imagen %s\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"ERROR: No se pudo asignar memoria para generar la imagen %s\n",nombreImagenGuarBuff);
             else
             {
                 if(!crearArchivoImagen(vecPtr,nombreImagenGuarBuff))
-                    printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+                    mode==false?printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff):
+                        fprintf(*pfErr,"ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
                 else
-                    printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+                    mode==false?printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff):
+                        fprintf(*pfErr,"La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
                 destruirMat((void**)vecPtr->imagePixelsMod,vecPtr->metadataMod.height);
                 vecPtr->imagePixelsMod=vecPtr->imagenPixelsModPtr;
                 restaurarImagenModificable(vecPtr);
@@ -195,7 +203,7 @@ void procesarImagenesFiltroArg0Met (t_imageDataVector *imageStateDataVector, con
         vecPtr++;
     }
 }
-void procesarImagenesFiltroArg0 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,void filtro(t_imageData *imagen), const char *nombreGrupo,char *nombreImagenGuarBuff)
+void procesarImagenesFiltroArg0 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,void filtro(t_imageData *imagen), const char *nombreGrupo,char *nombreImagenGuarBuff,bool mode, FILE **pfErr)
 {
     //funcion procesadora para aquellos filtros que trabajan con una sola imagen, no modifican metadatos ni tienen argumentos de entrada
     //sirve para escala de grises, espejar horizontal, espejar vertical, negativo, comodin
@@ -208,9 +216,11 @@ void procesarImagenesFiltroArg0 (t_imageDataVector *imageStateDataVector, const 
             filtro(ptrVec);
             crearNombreImagenGuardado(ptrVec->realName,funPtr->functionName,nombreGrupo,nombreImagenGuarBuff);
             if(!crearArchivoImagen(ptrVec,nombreImagenGuarBuff))
-                printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+                mode==false?printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
             else
-                printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+                mode==false?printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
             restaurarImagenModificable(ptrVec);
         }
         ptrVec++;
@@ -461,7 +471,7 @@ bool concatenarVertical (t_imageData *imagen1, t_imageData *imagen2)
     return true;
 }
 //agregados reentrega
-void procesarImagenesConcat (t_imageDataVector *imageStateDataVector, t_functionsData *ptrFun, bool filtro (t_imageData *imagen1, t_imageData *imagen2), const char *nombreGrupo,char *nombreImagenGuarBuff, t_imageData **concatenar1, t_imageData **concatenar2)
+void procesarImagenesConcat (t_imageDataVector *imageStateDataVector, t_functionsData *ptrFun, bool filtro (t_imageData *imagen1, t_imageData *imagen2), const char *nombreGrupo,char *nombreImagenGuarBuff, t_imageData **concatenar1, t_imageData **concatenar2,bool mode, FILE **pfErr)
 {
     //funcion procesadora para los filtros de concatenacion: --concatenar-vertical, --concatenar-horizontal
     if(encontrarImagenes(imageStateDataVector,concatenar1,concatenar2))
@@ -470,18 +480,22 @@ void procesarImagenesConcat (t_imageDataVector *imageStateDataVector, t_function
         {
             crearNombreImagenGuardadoConcat((*concatenar1)->realName,(*concatenar2)->realName,ptrFun->functionName,nombreGrupo,nombreImagenGuarBuff);
             if(!crearArchivoImagen(*concatenar1,nombreImagenGuarBuff))
-                printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+                mode==false?printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
             else
-                printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+                mode==false?printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
             destruirMat((void**)(*concatenar1)->imagePixelsMod,(*concatenar1)->metadataMod.height);
             (*concatenar1)->imagePixelsMod=(*concatenar1)->imagenPixelsModPtr;
             restaurarImagenModificable(*concatenar1);
         }
         else
-            printf("Error: no se pudo asignar memoria dinamica para la imagen concatenada\n");
+            mode==false?printf("Error: no se pudo asignar memoria dinamica para la imagen concatenada\n"):
+                fprintf(*pfErr,"Error: no se pudo asignar memoria dinamica para la imagen concatenada\n");
     }
     else
-        printf("Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName);
+        mode==false?printf("Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName):
+            fprintf(*pfErr,"Nota: '%s' no se pudo ejecutar porque se necesitan al menos 2 imagenes cargadas\n",ptrFun->functionName);
     ptrFun->functionIsUsed=true;
 }
 bool isConfName (const char *arg)
@@ -497,4 +511,56 @@ bool isErrName (const char *arg)
         return true;
     else
         return false;
+}
+bool verificarArchivoConf(char *arg, t_archConfErrData *dest, t_archConfErrData *verif)
+{
+    FILE *pf;
+    char *iniNom=NULL;
+    char *iniExt=NULL;
+    iniExt=miStrrchr(arg,'.');
+    if(iniExt==NULL) //el archivo conf no tiene una extension asociada
+        return false;
+    iniExt++;
+    if(miStrcmp(iniExt,"conf")!=0) //el archivo no tiene extension conf
+        return false;
+    iniNom=miStrrchr(arg,'=');
+    iniNom++;
+    pf=fopen(iniNom,"rt");
+    if(pf==NULL)   //el archivo conf no existe
+        return false;
+    fclose(pf);
+    if(verif->isValid&&miStrcmp(iniNom,verif->archNom)==0)
+        return false; //el archivo existe pero es el de errores
+    miStrcpy(dest->archNom,iniNom); //si llega aca es xq existe por tanto copiamos el nombre
+    return true;
+}
+void inicializarConfErr (t_archConfErrData *vec)
+{
+    miStrcpy(vec->archNom,"");
+    vec->isValid=false;
+    vec++;
+    miStrcpy(vec->archNom,"");
+    vec->isValid=false;
+}
+bool obtenerNombreErr (char *arg, t_archConfErrData *dest, t_archConfErrData *verif)
+{
+    char *iniNom=NULL;
+    char *iniExt=NULL;
+    iniExt=miStrrchr(arg,'.');
+    if(iniExt==NULL) //el archivo errores no tiene una extension asociada
+        return false;
+    iniExt++;
+    if(miStrcmp(iniExt,"txt")!=0) //el archivo no tiene extension .txt
+        return false;
+    iniNom=miStrrchr(arg,'=');
+    iniNom++;
+    if(verif->isValid&&miStrcmp(iniNom,verif->archNom)==0)
+        return false; //el archivo de errores se llama igual que el de conf.
+    miStrcpy(dest->archNom,iniNom); //si llega aca es xq es un nombre valido, copiamos el nombre
+    return true;
+}
+void limpiarArgConf (char *argConf)
+{
+    char *fin=argConf+miStrlen(argConf)-1;
+    *fin='\0';
 }

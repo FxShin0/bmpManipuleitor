@@ -8,7 +8,7 @@ bool esNumero (char c);
 void inicializarDatosFunciones (t_functionsData *datosFunciones);
 void restaurarImagenModificable (t_imageData *imagen);
 unsigned char calcularPadding (const unsigned int width);
-void procesarImagenesFiltroArg1 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,void filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff);
+void procesarImagenesFiltroArg1 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,void filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff, bool mode, FILE **pfErr);
 void recalcularMetadatos (t_imageData *imagen, int height, int width);
 
 void aumentarContraste (t_imageData *imagenSt, int porcentaje);

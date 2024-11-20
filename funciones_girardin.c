@@ -158,7 +158,7 @@ unsigned char calcularPadding (const unsigned int width)
 {
     return (4-(width*sizeof(t_pixel)%4))%4;
 }
-void procesarImagenesFiltroArg1 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,void filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff)
+void procesarImagenesFiltroArg1 (t_imageDataVector *imageStateDataVector, const t_functionsData *datosFunciones, unsigned char argToNumberRet,void filtro(t_imageData *imagen, int porcentaje), const char *nombreGrupo,char *nombreImagenGuarBuff,bool mode, FILE **pfErr)
 {
     //funcion procesadora para aquellos filtros que trabajan con una sola imagen, no modifican metadatos y tienen 1 argumento de entrada
     //sirve para aumentar contraste, reducir contraste, tonalidad azul, tonalidad verde, tonalidad roja
@@ -171,9 +171,11 @@ void procesarImagenesFiltroArg1 (t_imageDataVector *imageStateDataVector, const 
             filtro(ptrVec,funPtr->porcentaje);
             crearNombreImagenGuardado(ptrVec->realName,funPtr->functionName,nombreGrupo,nombreImagenGuarBuff);
             if(!crearArchivoImagen(ptrVec,nombreImagenGuarBuff))
-                printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
+                mode==false?printf("ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff):
+                    fprintf(*pfErr,"ERROR: No se pudo crear el archivo %s\n",nombreImagenGuarBuff);
             else
-                printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
+                mode==false?printf("La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff):
+                   fprintf(*pfErr,"La imagen %s fue creada exitosamente!\n",nombreImagenGuarBuff);
             restaurarImagenModificable(ptrVec);
         }
         ptrVec++;

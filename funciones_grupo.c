@@ -25,10 +25,13 @@ int solucion(int argc, char* argv[])
     t_functionsData datosFunciones[FUNCTIONS];
     t_archConfErrData vecConfErr[2];
     t_functionsData *ptrFun=datosFunciones;
+    FILE *pfConf=NULL,*pfErr=NULL;
+    int confCounter=0;
     const char nombreGrupo[]="DINAMITA";
     char nombreImagenGuarBuff[261];
+    char argConfBuff[256];
     char **argvPtr=argv+1;
-    bool canLoad=true;
+    bool canLoad=true, flagConf=false,flagErr=false,flagConfAttempt=false;
     int argToNumberRet=0;
     char couldLoad=0;
     t_imageDataVector imageStateDataVector;
@@ -107,7 +110,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,greyFilter,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,greyFilter,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -118,7 +121,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,espejarHorizontal,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,espejarHorizontal,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -129,7 +132,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,espejarVertical,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,espejarVertical,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -140,7 +143,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0Met(&imageStateDataVector,datosFunciones,argToNumberRet,rotarDerecha,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0Met(&imageStateDataVector,datosFunciones,argToNumberRet,rotarDerecha,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -151,7 +154,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0Met(&imageStateDataVector,datosFunciones,argToNumberRet,rotarIzquierda,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0Met(&imageStateDataVector,datosFunciones,argToNumberRet,rotarIzquierda,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -166,7 +169,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -185,7 +188,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -204,7 +207,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -223,7 +226,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -242,7 +245,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -261,7 +264,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -280,7 +283,7 @@ int solucion(int argc, char* argv[])
                 {
                     if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
                     {
-                        procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff);
+                        procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
                     }
                 }
@@ -294,7 +297,7 @@ int solucion(int argc, char* argv[])
         case 12: //concatenar-horizontal
         {
             if(!ptrFun->functionIsUsed)
-                procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarHorizontal,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2);
+                procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarHorizontal,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2,false,&pfErr);
             else
                 printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
             break;
@@ -303,7 +306,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,negativo,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,negativo,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -314,7 +317,7 @@ int solucion(int argc, char* argv[])
         {
             if(!ptrFun->functionIsUsed)
             {
-                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,comodin,nombreGrupo,nombreImagenGuarBuff);
+                procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,comodin,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                 ptrFun->functionIsUsed=true;
             }
             else
@@ -324,7 +327,7 @@ int solucion(int argc, char* argv[])
         case 15: //concatenar-vertical
         {
             if(!ptrFun->functionIsUsed)
-                procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarVertical,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2);
+                procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarVertical,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2,false,&pfErr);
             else
                 printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
             break;
@@ -336,12 +339,13 @@ int solucion(int argc, char* argv[])
         }
         case -3: //posible arch de conf
         {
+            flagConfAttempt=true;
             if(vecConfErr->isValid==false)
             {
                 if(verificarArchivoConf(*argvPtr, vecConfErr,vecConfErr+1))
                 {
+                    flagConf=true;
                     vecConfErr->isValid=true;
-                    printf("Nota: se utilizara '%s' como archivo de configuracion.\n",vecConfErr->archNom);
                 }
             }
             break;
@@ -352,8 +356,8 @@ int solucion(int argc, char* argv[])
             {
                 if(obtenerNombreErr(*argvPtr,vecConfErr+1,vecConfErr))
                 {
+                    flagErr=true;
                     (vecConfErr+1)->isValid=true;
-                    printf("Nota: se utilizara '%s' como archivo de log de errores.\n",(vecConfErr+1)->archNom);
                 }
             }
             break;
@@ -362,55 +366,308 @@ int solucion(int argc, char* argv[])
         argvPtr++;
         ptrFun=datosFunciones;
     }
+    //procesamiento de los filtros recibidos por el archivo conf
+    if(flagConf) //confirmamos que hay un archivo conf con el cual trabajar
+    {
+        if(!flagErr) //nos fijamos que haya uno de errores
+        {
+            if(miStrcmp(vecConfErr->archNom,(vecConfErr+1)->archNom)==0) //de no haberlo nos fijamos si es xq es el mismo que el de conf
+            {
+                printf("Error: el archivo de configuracion y el de log son el mismo.");
+                liberarMemoria(&imageStateDataVector);
+                return ERROR_LOG_CONF;
+            } //sino es porque no se especifico un nombre para el mismo o no existe o no tiene la terminacion adecuada.
+            printf("Error: si bien se especifico un archivo .conf, no se especifico un nombre para el archivo de log, o no existe, o no tiene la extension adecuada (.txt).");
+            liberarMemoria(&imageStateDataVector);
+            return ERROR_LOG;
+        }
+        else //procesamos en este caso.
+        {
+            printf("Nota: se utilizara el archivo '%s' como archivo de configuracion y '%s' como log de errores.\n",vecConfErr->archNom,(vecConfErr+1)->archNom);
+            pfConf=fopen(vecConfErr->archNom,"rt");
+            if(pfConf==NULL)
+            {
+                printf("Hubo algun error al abrir '%s'.\n",vecConfErr->archNom);
+                liberarMemoria(&imageStateDataVector);
+                return ERROR_ARCH;
+            }
+            pfErr=fopen((vecConfErr+1)->archNom,"wt");
+            if(pfErr==NULL)
+            {
+                printf("Hubo algun error al crear '%s'.\n",(vecConfErr+1)->archNom);
+                liberarMemoria(&imageStateDataVector);
+                return ERROR_ARCH;
+            }
+            while(fgets(argConfBuff,256,pfConf))
+            {
+                limpiarArgConf(argConfBuff);
+                argToNumberRet=argToNumber(argConfBuff,datosFunciones);
+                if(argToNumberRet>=0) //solo aplicamos el offset si se trata de una llamada a funcion valida
+                    ptrFun+=argToNumberRet;
+                switch(argToNumberRet)
+                {
+                case 0: //escala-de-grises
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,greyFilter,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 1: //espejar-horizontal
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,espejarHorizontal,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 2: //espejar-vertical
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,espejarVertical,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 3: //rotar-derecha
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0Met(&imageStateDataVector,datosFunciones,argToNumberRet,rotarDerecha,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 4: //rotar-izquierda
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0Met(&imageStateDataVector,datosFunciones,argToNumberRet,rotarIzquierda,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 5: //aumentar-contraste
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    break;
+                }
+                case 6: //reducir-contraste
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    break;
+                }
+                case 7: //tonalidadAzul
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    break;
+                }
+                case 8: //tonalidad Verde
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    break;
+                }
+                case 9: //tonalidad Roja
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    break;
+                }
+                case 10://recortar
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje)&&ptrFun->porcentaje>0)
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    break;
+                }
+                case 11: //achicar
+                {
+                    if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje)&&ptrFun->porcentaje>0)
+                    {
+                        if(!ptrFun->functionIsUsed)
+                        {
+                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
+                            {
+                                procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                                ptrFun->functionIsUsed=true;
+                            }
+                        }
+                        else
+                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    }
+                    else
+                    {
+                        fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
+                    }
+                    break;
+                }
+                case 12: //concatenar-horizontal
+                {
+                    if(!ptrFun->functionIsUsed)
+                        procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarHorizontal,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2,true,&pfErr);
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 13: //negativo
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,negativo,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 14: //comodin
+                {
+                    if(!ptrFun->functionIsUsed)
+                    {
+                        procesarImagenesFiltroArg0(&imageStateDataVector,datosFunciones,argToNumberRet,comodin,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                        ptrFun->functionIsUsed=true;
+                    }
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case 15: //concatenar-vertical
+                {
+                    if(!ptrFun->functionIsUsed)
+                        procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarVertical,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2,true,&pfErr);
+                    else
+                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                    break;
+                }
+                case -1: //imagen
+                {
+                    fprintf(pfErr,"Argumento: '%s'. No se puede especificar una imagen en el archivo de configuracion.\n",argConfBuff);
+                    break;
+                }
+                case -2: //argumento no valido
+                {
+                    fprintf(pfErr,"Argumento: '%s'. No es un comando valido o reconocido\n",argConfBuff);
+                    break;
+                }
+                case -3: //posible arch de conf
+                {
+                    fprintf(pfErr,"Argumento: '%s'. No se puede indicar un archivo de configuracion dentro del archivo de configuracion.\n",argConfBuff);
+                    break;
+                }
+                case -4: //posible arch de errores
+                {
+                    fprintf(pfErr,"Argumento: '%s'. No se puede indicar un archivo de log de errores dentro del archivo de configuracion.\n",argConfBuff);
+                    break;
+                }
+                }
+                ptrFun=datosFunciones;
+                confCounter++;
+            }
+            if(confCounter==0)
+                fprintf(pfErr,"El archivo de configuracion se encontraba vacio.\n");
+            fclose(pfConf);
+            fclose(pfErr);
+        }
+    }
+    else if(flagConfAttempt)
+        printf("Error: el archivo de configuracion especificado no existe o se llama igual que el de errores o no tiene la extension adecuada (.conf).\n");
     liberarMemoria(&imageStateDataVector);
     return 0;
-}
-bool verificarArchivoConf(char *arg, t_archConfErrData *dest, t_archConfErrData *verif)
-{
-    FILE *pf;
-    char *iniNom=NULL;
-    char *iniExt=NULL;
-    iniExt=miStrrchr(arg,'.');
-    if(iniExt==NULL) //el archivo conf no tiene una extension asociada
-        return false;
-    iniExt++;
-    if(miStrcmp(iniExt,"conf")!=0) //el archivo no tiene extension conf
-        return false;
-    iniNom=miStrrchr(arg,'=');
-    iniNom++;
-    pf=fopen(iniNom,"rt");
-    if(pf==NULL)   //el archivo conf no existe
-        return false;
-    fclose(pf);
-    if(verif->isValid&&miStrcmp(iniNom,verif->archNom)==0)
-        return false; //el archivo existe pero es el de errores
-    miStrcpy(dest->archNom,iniNom); //si llega aca es xq existe por tanto copiamos el nombre
-    return true;
-}
-void inicializarConfErr (t_archConfErrData *vec)
-{
-    miStrcpy(vec->archNom,"");
-    vec->isValid=false;
-    vec++;
-    miStrcpy(vec->archNom,"");
-    vec->isValid=false;
-}
-bool obtenerNombreErr (char *arg, t_archConfErrData *dest, t_archConfErrData *verif)
-{
-    char *iniNom=NULL;
-    char *iniExt=NULL;
-    iniExt=miStrrchr(arg,'.');
-    if(iniExt==NULL) //el archivo errores no tiene una extension asociada
-        return false;
-    iniExt++;
-    if(miStrcmp(iniExt,"txt")!=0) //el archivo no tiene extension .txt
-        return false;
-    iniNom=miStrrchr(arg,'=');
-    iniNom++;
-    if(verif->isValid&&miStrcmp(iniNom,verif->archNom)==0)
-        return false; //el archivo de errores se llama igual que el de conf.
-    miStrcpy(dest->archNom,iniNom); //si llega aca es xq es un nombre valido, copiamos el nombre
-    return true;
 }
 
 
