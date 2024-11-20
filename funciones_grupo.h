@@ -15,7 +15,6 @@ Aquí deben hacer los includes de sus archivos individuales, por ejemplo:
 #define INCR_FAC 1
 #define FILTRO_NULO -3
 #define FILTRO_APLICADO -4
-#define ERROR_LOG_CONF -5
 #define ERROR_LOG -6
 #define ERROR_ARCH -7
 #pragma pack(push, 1)

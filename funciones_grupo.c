@@ -77,6 +77,7 @@ int solucion(int argc, char* argv[])
     if(imageStateDataVector.ce==0)
     {
         puts("Error: No se ingreso ninguna imagen.");
+        liberarMemoria(&imageStateDataVector); //liberamos la memoria asignada en inicializacion
         return ERROR_SIN_IMAGEN;
     }
     //modifica ptrMov
@@ -167,11 +168,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -186,11 +184,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -205,11 +200,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -224,11 +216,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -243,11 +232,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -262,11 +248,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -281,11 +264,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                    if(obtenerPorcentaje(*argvPtr,&ptrFun->porcentaje))
-                    {
                         procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
                         ptrFun->functionIsUsed=true;
-                    }
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -371,13 +351,7 @@ int solucion(int argc, char* argv[])
     {
         if(!flagErr) //nos fijamos que haya uno de errores
         {
-            if(miStrcmp(vecConfErr->archNom,(vecConfErr+1)->archNom)==0) //de no haberlo nos fijamos si es xq es el mismo que el de conf
-            {
-                printf("Error: el archivo de configuracion y el de log son el mismo.");
-                liberarMemoria(&imageStateDataVector);
-                return ERROR_LOG_CONF;
-            } //sino es porque no se especifico un nombre para el mismo o no existe o no tiene la terminacion adecuada.
-            printf("Error: si bien se especifico un archivo .conf, no se especifico un nombre para el archivo de log, o no existe, o no tiene la extension adecuada (.txt).");
+            printf("Error: si bien se especifico un archivo .conf, no se especifico un nombre para el archivo de log, o no existe,\no no tiene la extension adecuada (.txt), o se llama igual que el de configuracion.");
             liberarMemoria(&imageStateDataVector);
             return ERROR_LOG;
         }
@@ -467,11 +441,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
@@ -486,11 +457,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
@@ -505,11 +473,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
@@ -524,11 +489,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
@@ -543,11 +505,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
@@ -562,11 +521,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
@@ -581,11 +537,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                            if(obtenerPorcentaje(argConfBuff,&ptrFun->porcentaje))
-                            {
                                 procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
                                 ptrFun->functionIsUsed=true;
-                            }
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
