@@ -31,7 +31,7 @@ int solucion(int argc, char* argv[])
     char nombreImagenGuarBuff[261];
     char argConfBuff[256];
     char **argvPtr=argv+1;
-    bool canLoad=true, flagConf=false,flagErr=false,flagConfAttempt=false;
+    bool canLoad=true, flagConf=false,flagErr=false,flagConfAttempt=false,flagOneImg=false;
     int argToNumberRet=0;
     char couldLoad=0;
     t_imageDataVector imageStateDataVector;
@@ -87,8 +87,11 @@ int solucion(int argc, char* argv[])
         switch(couldLoad)
         {
         case 0:
+        {
             imageStateDataVector.ptrMov->isLoaded=true;
+            flagOneImg=true;
             break;
+        }
         case 1:
             printf("Advertencia: El archivo '%s' no se pudo abrir o no existe\n",imageStateDataVector.ptrMov->realName);
             break;
@@ -99,6 +102,12 @@ int solucion(int argc, char* argv[])
         imageStateDataVector.ptrMov++;
     }
     restaurarPunteroImg(&imageStateDataVector);
+    if(!flagOneImg) //verificamos que de las imagenes ingresadas se haya cargado al menos una, si no se cargo ninguna entonces cortamos aca.
+    {
+        printf("Error: Ninguna de las imagenes ingresadas se pudieron cargar, sea porque no existen o porque no habia memoria para guardarlas.\n");
+        liberarMemoria(&imageStateDataVector); //liberamos la memoria
+        return ERROR_SIN_IMAGEN;
+    }
     //modifica argvPtr, y funPtr. Procesamiento de argumentos del main
     for(int x=1; x<argc; x++)
     {
@@ -168,8 +177,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -184,8 +193,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -200,8 +209,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -216,8 +225,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -232,8 +241,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -248,8 +257,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -264,8 +273,8 @@ int solucion(int argc, char* argv[])
             {
                 if(!ptrFun->functionIsUsed)
                 {
-                        procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
-                        ptrFun->functionIsUsed=true;
+                    procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,false,&pfErr);
+                    ptrFun->functionIsUsed=true;
                 }
                 else
                     printf("Nota: Se detecto una llamada demas a la funcion %s\n",ptrFun->functionName);
@@ -442,8 +451,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,aumentarContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
@@ -458,8 +467,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,reducirContraste,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
@@ -474,8 +483,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadAzul,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
@@ -490,8 +499,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadVerde,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
@@ -506,8 +515,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1(&imageStateDataVector,datosFunciones,argToNumberRet,tonalidadRoja,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
@@ -522,8 +531,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,recortar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
@@ -538,8 +547,8 @@ int solucion(int argc, char* argv[])
                     {
                         if(!ptrFun->functionIsUsed)
                         {
-                                procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
-                                ptrFun->functionIsUsed=true;
+                            procesarImagenesFiltroArg1Met(&imageStateDataVector,datosFunciones,argToNumberRet,achicar,nombreGrupo,nombreImagenGuarBuff,true,&pfErr);
+                            ptrFun->functionIsUsed=true;
                         }
                         else
                             fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
