@@ -562,5 +562,6 @@ bool obtenerNombreErr (char *arg, t_archConfErrData *dest, t_archConfErrData *ve
 void limpiarArgConf (char *argConf)
 {
     char *fin=argConf+miStrlen(argConf)-1;
-    *fin='\0';
+    if(*fin=='\n') //el ultimo registro del archivo conf no va a tener salto de linea por eso esta este if.
+        *fin='\0';
 }
