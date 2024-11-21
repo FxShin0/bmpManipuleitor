@@ -375,6 +375,7 @@ int solucion(int argc, char* argv[])
             while(fgets(argConfBuff,256,pfConf))
             {
                 limpiarArgConf(argConfBuff);
+                fprintf(pfErr,"%d. Procesando argumento: %s\n",confCounter+1,argConfBuff);
                 argToNumberRet=argToNumber(argConfBuff,datosFunciones);
                 if(argToNumberRet>=0) //solo aplicamos el offset si se trata de una llamada a funcion valida
                     ptrFun+=argToNumberRet;
@@ -610,6 +611,7 @@ int solucion(int argc, char* argv[])
                 }
                 ptrFun=datosFunciones;
                 confCounter++;
+                fprintf(pfErr,"\n");
             }
             if(confCounter==0)
                 fprintf(pfErr,"El archivo de configuracion se encontraba vacio.\n");
