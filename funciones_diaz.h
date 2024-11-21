@@ -20,6 +20,7 @@ bool rotarIzquierda (t_imageData *imagenSt);
 char recortar(t_imageData *imagenSt, int porcentaje);
 char achicar (t_imageData *imagenSt, int porcentaje);
 bool concatenarHorizontal (t_imageData *imagen1, t_imageData *imagen2);
+//agregados entrega 2
 bool concatenarVertical (t_imageData *imagen1, t_imageData *imagen2);
 bool isConfName (const char *arg);
 bool isErrName (const char *arg);

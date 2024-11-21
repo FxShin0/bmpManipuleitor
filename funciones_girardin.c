@@ -131,12 +131,12 @@ void inicializarDatosFunciones (t_functionsData *datosFunciones)
     datosFunciones->functionIsUsed=false;
     datosFunciones->porcentaje=0;
     datosFunciones++;
-    //14. comodin
+    //15. comodin
     miStrcpy(datosFunciones->functionName,"comodin");
     datosFunciones->functionIsUsed=false;
     datosFunciones->porcentaje=0;
     datosFunciones++;
-    //15. concatenar-vertical
+    //16. concatenar-vertical
     miStrcpy(datosFunciones->functionName,"concatenar-vertical");
     datosFunciones->functionIsUsed=false;
     datosFunciones->porcentaje=0;
