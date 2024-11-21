@@ -360,7 +360,7 @@ int solucion(int argc, char* argv[])
     {
         if(!flagErr) //nos fijamos que haya uno de errores
         {
-            printf("Error: si bien se especifico un archivo .conf, no se especifico un nombre para el archivo de log, o no existe,\no no tiene la extension adecuada (.txt), o se llama igual que el de configuracion.");
+            printf("Error: si bien se especifico un archivo .conf, no se especifico un nombre para el archivo de log,\no no tiene la extension adecuada (.txt), o se llama igual que el de configuracion.");
             liberarMemoria(&imageStateDataVector);
             return ERROR_LOG;
         }
