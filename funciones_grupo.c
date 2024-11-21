@@ -389,7 +389,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 1: //espejar-horizontal
@@ -400,7 +400,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 2: //espejar-vertical
@@ -411,7 +411,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 3: //rotar-derecha
@@ -422,7 +422,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 4: //rotar-izquierda
@@ -433,7 +433,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 5: //aumentar-contraste
@@ -446,7 +446,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                         fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
@@ -462,7 +462,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                         fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
@@ -478,7 +478,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                         fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
@@ -494,7 +494,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                         fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
@@ -510,7 +510,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                         fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
@@ -526,7 +526,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                         fprintf(pfErr,"Argumento: '%s'. Los porcentajes ingresados son invalidos o no tienen un formato correcto.\n",argConfBuff);
@@ -542,7 +542,7 @@ int solucion(int argc, char* argv[])
                                 ptrFun->functionIsUsed=true;
                         }
                         else
-                            fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                            fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     }
                     else
                     {
@@ -555,7 +555,7 @@ int solucion(int argc, char* argv[])
                     if(!ptrFun->functionIsUsed)
                         procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarHorizontal,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2,true,&pfErr);
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 13: //negativo
@@ -566,7 +566,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 14: //comodin
@@ -577,7 +577,7 @@ int solucion(int argc, char* argv[])
                         ptrFun->functionIsUsed=true;
                     }
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case 15: //concatenar-vertical
@@ -585,7 +585,7 @@ int solucion(int argc, char* argv[])
                     if(!ptrFun->functionIsUsed)
                         procesarImagenesConcat(&imageStateDataVector,ptrFun,concatenarVertical,nombreGrupo,nombreImagenGuarBuff,&concatenar1,&concatenar2,true,&pfErr);
                     else
-                        fprintf(pfErr,"Argumento: '%s'. Se detecto una llamada demas a la funcion %s\n",argConfBuff,ptrFun->functionName);
+                        fprintf(pfErr,"Argumento: '%s'. La funcion '%s' ya fue llamado previamente en otro argumento anterior.\n",argConfBuff,ptrFun->functionName);
                     break;
                 }
                 case -1: //imagen
