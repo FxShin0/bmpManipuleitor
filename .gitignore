@@ -1,8 +1,6 @@
 
 *.pdf
-bmpmanipuleitor.depend
-bmpmanipuleitor.layout
-bmpmanipuleitor.cbp
+bmpManipuleitor.cbp
 *.conf
 *.txt
 obj
