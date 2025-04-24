@@ -84,3 +84,99 @@ El archivo `.txt` creado contiene:
 
 ---
 
+## 🛠️ ¿Cómo usar?
+
+Este programa es una **aplicación de consola**. Podés ejecutarlo desde una terminal o desde `cmd`, posicionándote en la carpeta donde se encuentra el ejecutable `bmpmanipuleitor.exe`.
+
+### ▶️ Ejecución básica
+
+```bash
+bmpmanipuleitor.exe imagenDePrueba.bmp
+```
+
+> 📌 **Importante**: La imagen debe estar en formato **.bmp de 24 bits**. Si no agregás filtros, el programa no hará nada.
+
+### 🎛️ Argumentos disponibles
+
+#### ✅ Filtros que **no requieren valores**:
+
+```
+--escala-de-grises
+--espejar-horizontal
+--espejar-vertical
+--rotar-derecha
+--rotar-izquierda
+--negativo
+--comodin
+```
+
+#### 🔢 Filtros que **requieren valores (1–100)**:
+
+```
+--aumentar-contraste=valor
+--reducir-contraste=valor
+--tonalidad-azul=valor
+--tonalidad-verde=valor
+--tonalidad-roja=valor
+--recortar=valor
+--achicar=valor
+```
+
+> 📌 Por ejemplo: `--aumentar-contraste=50` aumentará el contraste en un 50% respecto de la imagen original.
+
+#### 🖼️ Filtros que **requieren dos imágenes cargadas**:
+
+```
+--concatenar-horizontal
+--concatenar-vertical
+```
+
+> Si las imágenes tienen distinta resolución, los píxeles sobrantes se rellenan con un color **dorado**.
+
+---
+
+### 🧪 Ejemplo de uso
+
+```bash
+bmpmanipuleitor.exe imagen1.bmp imagen2.bmp --escala-de-grises --reducir-contraste=30 --concatenar-vertical
+```
+
+Este comando carga dos imágenes, les aplica los filtros especificados y concatena el resultado verticalmente.
+
+Podés cargar **tantas imágenes como quieras** y los argumentos **no necesitan estar en orden**.
+
+---
+
+### 📄 Uso de archivos externos
+
+Podés aplicar filtros desde un archivo `.conf`, y generar un archivo de log con los eventos del programa.
+
+```bash
+--filtros=archivo.conf
+--errores=log.txt
+```
+
+- El archivo `.conf` **debe existir**.
+- El archivo de log `.txt` **se creará** si no existe.
+
+#### Ejemplo completo
+
+```bash
+bmpmanipuleitor.exe imagenDePrueba1.bmp imagenDePrueba2.bmp --escala-de-grises --aumentar-contraste=30 --recortar=30 --concatenar-horizontal --filtros=filtros.conf --errores=log.txt
+```
+
+Este comando:
+1. Carga las imágenes.
+2. Aplica los filtros pasados por línea de comandos.
+3. Aplica luego los filtros del archivo `.conf`.
+4. Registra todo los eventos relacionados con la ejecucion de los filtros de fitros.conf en `log.txt`.
+
+---
+
+## 📦 Archivos incluidos
+
+- Todos los archivos `.c` y `.h` necesarios para compilar el programa.
+- El archivo del proyecto `Code::Blocks (.cbp)` para compilar fácilmente.
+- Una carpeta `bin/Debug/` con el **ejecutable** precompilado (`.exe`).
+- Imágenes de prueba listas para testear el programa rápidamente.
+
